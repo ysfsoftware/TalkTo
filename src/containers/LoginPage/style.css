@@ -1,0 +1,13 @@
+.loginContainer, .registerContainer{
+    width: 400px;
+    position: relative;
+    margin: 50px auto;
+}
+.Logo {
+    background-image: url(../image/index.jpg);
+    background-repeat: no-repeat;
+    size:10px;
+    background-size: cover;
+    background-position: enter;
+    opacity: 0.5;
+  }
