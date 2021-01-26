@@ -1,9 +1,12 @@
 import  firebase from "firebase";
+import { max } from "moment";
 import { authConstanst } from "./constants";
 
-
-
-
+var ust=99999999;
+var alt=10000000;
+let sayi=Math.random(); 
+sayi=sayi*(ust-alt);
+sayi=Math.floor(sayi)+alt;
 export const signup = (user) => {
 
     return async (dispatch) => {
@@ -17,25 +20,27 @@ export const signup = (user) => {
         .then(data => {
             console.log(data);
             const currentUser = firebase.auth().currentUser;
-            const name = `${user.firstName} ${user.lastName}`;
+            const userName = user.email.substring(0, user.email.indexOf('@'))+sayi;
             currentUser.updateProfile({
-            displayName: name
+            
            })
            .then(()=>{
             db.collection('users')
             .doc(data.user.uid)
             .set({
-                firstName: user.firstName,
-                lastName: user.lastName,
-                uid: data.user.uid,
+                userName: userName,
+                userID: data.user.uid,
                 createdAt: new Date(),
+                email: user.email,
+                profilURL:"",
+                seviye:"1",
+                updatedAt: new Date(),
                 isOnline: true
             })
             .then(()=>{
                 const loggedInUser = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    uid: data.user.uid,
+                    userName: userName,
+                    userID: data.user.uid,
                     email: user.email
                 } 
                 localStorage.setItem('user',JSON.stringify(loggedInUser));
@@ -78,14 +83,11 @@ export const signin = (user) => {
                 isOnline: true
             })
             .then(() => {
-                const name = data.user.displayName.split(" ");
-                const firstName = name[0];
-                const lastName = name[1];
+                const name = data.user.userName;
     
                 const loggedInUser = {
-                    firstName,
-                    lastName,
-                    uid: data.user.uid,
+                    name,
+                    userID: data.user.uid,
                     email: data.user.email
                 }
                 localStorage.setItem('user', JSON.stringify(loggedInUser));
@@ -131,14 +133,14 @@ export const isLoggedInUser = () => {
     }
 }
 
-export const logout = (uid) => {
+export const logout = (userID) => {
     return async dispatch => {
         dispatch({ type: `${authConstanst.USER_LOGOUT}_REQUEST` });
     
 
         const db = firebase.firestore();
         db.collection('users')
-        .doc(uid)
+        .doc(userID)
         .update({
             isOnline: false
         })

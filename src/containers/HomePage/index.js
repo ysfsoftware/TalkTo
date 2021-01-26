@@ -15,7 +15,7 @@ const User = (props) =>{
                         <img src="https://i.pinimg.com/originals/be/ac/96/beac96b8e13d2198fd4bb1d5ef56cdcf.jpg" alt="" />
                     </div>
                     <div style={{ display: 'flex', flex: 1, justifyContent: 'space-between', margin: '0 10px'}}>
-                        <span style={{fontWeight: 500}}>{user.firstName} {user.lastName}</span>
+                        <span style={{fontWeight: 500}}>{user.userName}</span>
                         <span className={user.isOnline ? `onlineStatus` : `onlineStatus off`}></span>
                     </div>
                 </div>
@@ -37,7 +37,7 @@ const HomePage = (props) => {
 
     useEffect(() => {
 
-        unsubscribe = dispatch(getRealtimeUsers(auth.uid))
+        unsubscribe = dispatch(getRealtimeUsers(auth.userID))
          .then(unsubscribe => {
             return unsubscribe;
           })
@@ -61,20 +61,20 @@ const HomePage = (props) => {
       const initChat = (user) => {
 
         setChatStarted(true)
-        setChatUser(`${user.firstName} ${user.lastName}`)
-        setUserUid(user.uid);
+        setChatUser(`${user.userName}`)
+        setUserUid(user.userID);
     
         console.log(user);
     
       
-        dispatch(getRealtimeSpeeches({ uid_1: auth.uid, uid_2: user.uid }));
+        dispatch(getRealtimeSpeeches({ konusma_sahibi: auth.userID, kimle_konusuyor: user.userID }));
       }
       
       const submitMessage = (e) => {
 
         const msgObj = {
-          user_uid_1: auth.uid,
-          user_uid_2: userUid,
+          konusma_sahibi: auth.userID,
+          kimle_konusuyor: userUid,
           message
         }
     
@@ -103,7 +103,7 @@ const HomePage = (props) => {
                  return (
                    <User 
                      onClick={initChat}
-                     key={user.uid} 
+                     key={user.userID} 
                      user={user} 
                      />
                  );
@@ -121,7 +121,7 @@ const HomePage = (props) => {
            {
                   chatStarted ? 
                   user.speeches.map(con =>
-                    <div style={{ textAlign: con.user_uid_1 == auth.uid ? 'right' : 'left' }}>
+                    <div style={{ textAlign: con.konusma_sahibi == auth.userID ? 'right' : 'left' }}>
                     <p className="messageStyle" >{con.message}</p>
                   </div> )
                   : null

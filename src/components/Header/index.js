@@ -34,7 +34,7 @@ const Header = (props) => {
            
         </div>
           <div style={{margin: '20px 0', color: '#fff', fontWeight: 'bold'}}>
-            {auth.authenticated ? `Merhaba ${auth.firstName} ${auth.lastName}` : ''}
+            
           </div>
         <ul className="menu">
 
@@ -42,7 +42,7 @@ const Header = (props) => {
               auth.authenticated ?
               <li>
                 <Link to={'#'} onClick={() => {
-                  dispatch(logout(auth.uid))
+                  dispatch(logout(auth.userID))
                 }}>Çıkış</Link>
             </li> : null
             }

@@ -14,9 +14,6 @@ import { Redirect } from 'react-router-dom';
 
 const RegisterPage = (props) => {
 
-
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
@@ -27,7 +24,7 @@ const RegisterPage = (props) => {
     e.preventDefault();
 
     const user = {
-      firstName, lastName, email, password
+       email, password
     }
 
     dispatch(signup(user))
@@ -44,21 +41,6 @@ const RegisterPage = (props) => {
 
             <h3>Giriş Yap</h3>
 
-            <input 
-              name="firstName"
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              placeholder="Ad"
-            />
-
-            <input 
-              name="lastName"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              placeholder="Soyad"
-            />
 
             <input 
               name="email"
@@ -67,7 +49,6 @@ const RegisterPage = (props) => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
             />
-
             <input 
               name="password"
               type="password"

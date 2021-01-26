@@ -5,7 +5,6 @@ import { signin, isLoggedInUser } from '../../actions';
 import './style.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import logo from '../image/index.jpg';
 
 
 

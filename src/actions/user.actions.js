@@ -2,7 +2,7 @@ import { userConstants } from "./constants";
 import firebase  from 'firebase';
 
 
-export const getRealtimeUsers = (uid) => {
+export const getRealtimeUsers = (userID) => {
 
     return async (dispatch) => {
 
@@ -10,11 +10,10 @@ export const getRealtimeUsers = (uid) => {
 
         const db = firebase.firestore();
         const unsubscribe = db.collection("users")
-        //.where("uid", "!=", uid)
         .onSnapshot((querySnapshot) => {
             const users = [];
             querySnapshot.forEach(function(doc) {
-                if(doc.data().uid != uid){
+                if(doc.data().userID != userID){
                     users.push(doc.data());
                 }
             });
@@ -59,7 +58,7 @@ export const getRealtimeSpeeches = (user) => {
 
         const db = firebase.firestore();
         db.collection('speeches')
-        .where('user_uid_1', 'in', [user.uid_1, user.uid_2])
+        .where('konusma_sahibi', 'in', [user.konusma_sahibi, user.kimle_konusuyor])
         .orderBy('createdAt','asc')
         .onSnapshot((querySnapshot) => {
 
@@ -68,9 +67,9 @@ export const getRealtimeSpeeches = (user) => {
             querySnapshot.forEach(doc => {
 
                 if(
-                    (doc.data().user_uid_1 == user.uid_1 && doc.data().user_uid_2 == user.uid_2)
+                    (doc.data().konusma_sahibi == user.konusma_sahibi && doc.data().kimle_konusuyor == user.kimle_konusuyor)
                     || 
-                    (doc.data().user_uid_1 == user.uid_2 && doc.data().user_uid_2 == user.uid_1)
+                    (doc.data().konusma_sahibi == user.kimle_konusuyor && doc.data().kimle_konusuyor == user.konusma_sahibi)
                 ){
                     speeches.push(doc.data())
                 }  
